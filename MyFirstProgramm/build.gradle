@@ -1,0 +1,17 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+mainClassName ="ru.rt.client.MyFirstProgram"
+group 'net.qalab.mantisbt'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories{
+    mavenCentral()
+}
+
+dependencies{
+    implementation 'org.testng:testng:6.14.3'
+}
