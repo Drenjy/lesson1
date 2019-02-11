@@ -21,29 +21,49 @@ public class LoginTest {
     driver = new FirefoxDriver();
     baseUrl = "http://localhost/addressbook/";
     driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-      driver.get(baseUrl);
-      driver.findElement(By.name("user")).click();
-      driver.findElement(By.name("user")).clear();
-      driver.findElement(By.name("user")).sendKeys("admin");
-      driver.findElement(By.name("pass")).clear();
-      driver.findElement(By.name("pass")).sendKeys("secret");
-      driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='Пароль:'])[1]/following::input[2]")).click();
+    driver.get(baseUrl);
+    login("admin", "secret");
   }
 
-    @Test
+  private void login(String login, String password) {
+    driver.findElement(By.name("user")).click();
+    driver.findElement(By.name("user")).clear();
+    driver.findElement(By.name("user")).sendKeys(login);
+    driver.findElement(By.name("pass")).clear();
+    driver.findElement(By.name("pass")).sendKeys(password);
+    driver.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='Пароль:'])[1]/following::input[2]")).click();
+  }
+
+  @Test
     public void testGroupCreation() throws Exception {
-        driver.findElement(By.linkText("Группы")).click();
-        driver.findElement(By.name("new")).click();
-        driver.findElement(By.name("group_name")).click();
-        driver.findElement(By.name("group_name")).clear();
-        driver.findElement(By.name("group_name")).sendKeys("group1");
-        driver.findElement(By.name("group_header")).click();
-        driver.findElement(By.name("group_header")).clear();
-        driver.findElement(By.name("group_header")).sendKeys("header test");
-        driver.findElement(By.name("group_footer")).clear();
-        driver.findElement(By.name("group_footer")).sendKeys("group footer");
-        driver.findElement(By.name("submit")).click();
-    }
+    navToGroupPage();
+    initGroupCreation();
+    fillGroupForm(new GroupDate("groupName", "header test", "group footer"));
+    submitGroupCreation();
+  }
+
+  private void submitGroupCreation() {
+    driver.findElement(By.name("submit")).click();
+  }
+
+  private void fillGroupForm(GroupDate groupDate) {
+    driver.findElement(By.name("group_name")).click();
+    driver.findElement(By.name("group_name")).clear();
+    driver.findElement(By.name("group_name")).sendKeys(groupDate.getName());
+    driver.findElement(By.name("group_header")).click();
+    driver.findElement(By.name("group_header")).clear();
+    driver.findElement(By.name("group_header")).sendKeys(groupDate.getHeader());
+    driver.findElement(By.name("group_footer")).clear();
+    driver.findElement(By.name("group_footer")).sendKeys(groupDate.getFooter());
+  }
+
+  private void initGroupCreation() {
+    driver.findElement(By.name("new")).click();
+  }
+
+  private void navToGroupPage() {
+    driver.findElement(By.linkText("Группы")).click();
+  }
 
   @AfterClass(alwaysRun = true)
   public void tearDown() throws Exception {
