@@ -17,8 +17,7 @@ public class GroupHelper extends HelperBase {
     public void fillGroupForm(GroupDate groupDate) {
         type(By.name("group_name"), groupDate.getName());
         type(By.name("group_header"), groupDate.getHeader());
-        driver.findElement(By.name("group_footer")).clear();
-        driver.findElement(By.name("group_footer")).sendKeys(groupDate.getFooter());
+        type(By.name("group_footer"),groupDate.getFooter());
     }
 
     public void initGroupCreation() {
@@ -31,5 +30,13 @@ public class GroupHelper extends HelperBase {
 
     public void selectGroup() {
         click(By.name("selected[]"));
+    }
+
+    public void clickModificationGroup() {
+        click(By.name("edit"));
+    }
+
+    public void clickByUpdate() {
+        click(By.xpath(".//input[@name='update']"));
     }
 }
